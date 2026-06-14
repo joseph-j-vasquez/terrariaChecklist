@@ -4,6 +4,7 @@ import ActionBar from './component/ActionBar'
 import Display from './component/Display'
 import { DatabaseProvider } from './context/DatabaseContext'
 import { DrawerProvider } from './context/DrawerContext'
+import { SyncProvider } from './context/SyncContext'
 import './style/main.scss'
 
 const container = document.getElementById('app')
@@ -13,12 +14,14 @@ const root = createRoot(container)
 
 const App = (): JSX.Element => {
   return (
-    <DatabaseProvider>
-      <DrawerProvider>
-        <ActionBar />
-        <Display />
-      </DrawerProvider>
-    </DatabaseProvider>
+    <SyncProvider>
+      <DatabaseProvider>
+        <DrawerProvider>
+          <ActionBar />
+          <Display />
+        </DrawerProvider>
+      </DatabaseProvider>
+    </SyncProvider>
   )
 }
 

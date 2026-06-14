@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useDrawer } from '../context/DrawerContext'
+import { useSync } from '../context/SyncContext'
 import markdownToHtml from '../helper/markdown'
 import './Line.scss'
 
@@ -10,20 +11,16 @@ interface LineProps {
 }
 
 const Line = ({ pageId, id, text }: LineProps): JSX.Element => {
-  const [isChecked, setIsChecked] = React.useState<boolean>(false)
   const { setCheckedItem } = useDrawer()
-  const localStorageKey = `chapter-${pageId}-item-${id}`
+  const { getChecked, setChecked } = useSync()
+  const key = `chapter-${pageId}-item-${id}`
+  const isChecked = getChecked(key)
 
   const handleCheckboxClick = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const state = event.currentTarget.checked
-    localStorage.setItem(localStorageKey, state.toString())
-    setIsChecked(state)
+    setChecked(key, state)
     setCheckedItem({ pageType: 'chapter', pageId, itemId: id, state })
   }
-
-  useEffect(() => {
-    setIsChecked(localStorage.getItem(localStorageKey) === 'true')
-  }, [pageId, id])
 
   const textId = `chapter-${pageId}-item-${id}-text`
   const checkboxId = `chapter-${pageId}-item-${id}`

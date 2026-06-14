@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useDrawer } from '../context/DrawerContext'
+import { useSync } from '../context/SyncContext'
 import './Item.scss'
 
 enum CollectionType {
@@ -20,20 +21,16 @@ interface ItemProps {
 }
 
 const Item = ({ item, collectionId }: ItemProps): JSX.Element => {
-  const [isChecked, setIsChecked] = React.useState<boolean>(false)
   const { setCheckedItem } = useDrawer()
-  const localStorageKey = `collection-${collectionId}-item-${item.id}`
+  const { getChecked, setChecked } = useSync()
+  const key = `collection-${collectionId}-item-${item.id}`
+  const isChecked = getChecked(key)
 
   const handleItemClick = (): void => {
     const state = !isChecked
-    localStorage.setItem(localStorageKey, state.toString())
-    setIsChecked(state)
+    setChecked(key, state)
     setCheckedItem({ pageType: 'collection', pageId: collectionId, itemId: item.id, state })
   }
-
-  useEffect(() => {
-    setIsChecked(localStorage.getItem(localStorageKey) === 'true')
-  }, [collectionId, item.id])
 
   const slug = item.name.replace(/ /g, '_')
   const folder = {

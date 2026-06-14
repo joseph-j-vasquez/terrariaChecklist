@@ -10,7 +10,7 @@ interface SyncContextProps {
 
 const SyncContext = createContext<SyncContextProps | undefined>(undefined)
 
-export const SyncProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const SyncProvider: React.FC<{ children: ReactNode }> = ({ children }): JSX.Element => {
   const [state, setState] = useState<Record<string, boolean>>({})
   const [isLoaded, setIsLoaded] = useState(false)
 

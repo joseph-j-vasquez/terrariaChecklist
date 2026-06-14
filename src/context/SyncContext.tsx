@@ -20,7 +20,7 @@ export const SyncProvider: React.FC<{ children: ReactNode }> = ({ children }): J
       setState(snapshot.val() ?? {})
       setIsLoaded(true)
     })
-    return () => unsubscribe()
+    return (): void => unsubscribe()
   }, [])
 
   const getChecked = (key: string): boolean => state[key] ?? false
